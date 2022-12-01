@@ -15,4 +15,4 @@ if __name__ == '__main__':
         lines = [val.strip() for val in f]
     cals = sumCals(lines)
     print('most calories is: ' + str(max(cals)))
-    print('three most cals is: ' + str(sum(sorted(cals)[-3:])))
+    print('three most cal total is: ' + str(sum(sorted(cals)[-3:])))
