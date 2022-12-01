@@ -11,8 +11,7 @@ def sumCals(lines):
     return cals
 
 if __name__ == '__main__':
-    input = r'C:\Users\Jakob\workspaces\AoC2022\day1\input.txt'
-    with open(input) as f:
+    with open('day1/input.txt') as f:
         lines = [val.strip() for val in f]
     cals = sumCals(lines)
     print('most calories is: ' + str(max(cals)))
