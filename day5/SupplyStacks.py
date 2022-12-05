@@ -1,8 +1,8 @@
+import copy
 import re
 
 def buildStacks(lines):
-    p1Stacks = [[]]
-    p2Stacks = [[]]
+    Stacks = [[]]
     tempLines = []
 
     while True:
@@ -12,16 +12,14 @@ def buildStacks(lines):
             break
         tempLines.insert(0, line)
     for _ in line.split('   '):
-        p1Stacks.append([])
-        p2Stacks.append([])
+        Stacks.append([])
 
     for line in tempLines:
         for x in range(1, len(line), 4):
             if line[x].isalpha():
                 stackIndex = int(x / 4) + 1 if x > 2 else x
-                p1Stacks[stackIndex].append(line[x])
-                p2Stacks[stackIndex].append(line[x])
-    return p1Stacks, p2Stacks
+                Stacks[stackIndex].append(line[x])
+    return Stacks
 
 def transferContainersPart1(amount, orig, dest, p1Stacks):
     for _ in range(amount):
@@ -51,7 +49,8 @@ if __name__ == '__main__':
     with open('day5/input.txt') as f:
         lines = [line.rstrip('\n') for line in f]
     
-    p1Stacks, p2Stacks = buildStacks(lines)
+    p1Stacks = buildStacks(lines)
+    p2Stacks = copy.deepcopy(p1Stacks)
     transferContainers(lines, p1Stacks, p2Stacks)
 
     printTopOfStacks(p1Stacks)
