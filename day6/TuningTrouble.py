@@ -5,15 +5,14 @@ def checkUnique(str):
         return False
   return True
 
+def findSequence(type, input, length):
+    for i in range(0, len(input) - length):
+        if checkUnique(input[i:i + length]):
+            print('first ' + type + ' sequence after: ' + str(i + length))
+            return
+
 if __name__ == '__main__':
     input = open('day6/input.txt', 'r').read().rstrip()
 
-    for i in range(0, len(input) - 4):
-        if checkUnique(input[i:i+4]):
-            print('first package sequence after: ' + str(i + 4))
-            break
-
-    for i in range(0, len(input) - 14):
-        if checkUnique(input[i:i+14]):
-            print('first messege sequence after: ' + str(i + 14))
-            break
+    findSequence('package', input, 4)
+    findSequence('message', input, 14)
