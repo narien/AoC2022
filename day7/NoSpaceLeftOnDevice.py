@@ -1,13 +1,15 @@
 def executeCommand(line, currentDirs):
+    s = ''
     if line[1] == 'cd':
         if line[2] == '/':
             currentDirs = ['/']
         elif line[2] == '..':
             currentDirs.pop()
         else:
-            currentDirs.append(line[2])
+            for dir in currentDirs:
+                s += dir
+            currentDirs.append(s + line[2])
     return currentDirs
-    #elif line[1] == 'ls': # donothing
 
 def addSize(size, currentDirs, dirSizes):
     for dir in currentDirs:
@@ -15,6 +17,7 @@ def addSize(size, currentDirs, dirSizes):
             dirSizes[dir] += size
         else:
             dirSizes[dir] = size
+
 def calcSizeInAllDirs(lines):
     currentDirs = []
     dirSizes = dict()
@@ -25,8 +28,6 @@ def calcSizeInAllDirs(lines):
         
         elif line[0].isdigit():
             addSize(int(line[0]), currentDirs, dirSizes)
-        
-        #else: # dir
     return dirSizes
 
 def sumPartOne(dirs):
@@ -36,11 +37,24 @@ def sumPartOne(dirs):
             total += val
     return total
 
+def sizeOfDirPartTwo(dirs):
+    discSize = 70000000
+    currentUsed = dirs['/']
+    freeSpace = discSize - currentUsed
+    extraNeededSpace = 30000000 - freeSpace
+
+    dirSizeToDelete = 70000000
+    for val in dirs.values():
+        if val >= extraNeededSpace and val < dirSizeToDelete:
+            dirSizeToDelete = val
+    return dirSizeToDelete
+
 
 if __name__ == '__main__':
     with open('day7/input.txt') as f:
         lines = [line.rstrip('\n') for line in f]
 
-    print(lines)
     dirs = calcSizeInAllDirs(lines)
+    print(dirs)
     print('Sum of dirs for part one: ' + str(sumPartOne(dirs)))
+    print('Size of smallest dir to solve part two: ' + str(sizeOfDirPartTwo(dirs)))
