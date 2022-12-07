@@ -1,22 +1,23 @@
 def executeCommand(line, currentDirs):
-    s = ''
     if line[1] == 'cd':
         if line[2] == '/':
             currentDirs = ['/']
         elif line[2] == '..':
             currentDirs.pop()
         else:
-            for dir in currentDirs:
-                s += dir
-            currentDirs.append(s + line[2])
+            currentDirs.append(line[2])
     return currentDirs
 
 def addSize(size, currentDirs, dirSizes):
+    curDir = ''
     for dir in currentDirs:
-        if dir in dirSizes:
-            dirSizes[dir] += size
+        curDir += dir
+        if len(curDir) > 1:
+            curDir += '/'
+        if curDir in dirSizes:
+            dirSizes[curDir] += size
         else:
-            dirSizes[dir] = size
+            dirSizes[curDir] = size
 
 def calcSizeInAllDirs(lines):
     currentDirs = []
@@ -55,6 +56,5 @@ if __name__ == '__main__':
         lines = [line.rstrip('\n') for line in f]
 
     dirs = calcSizeInAllDirs(lines)
-    print(dirs)
     print('Sum of dirs for part one: ' + str(sumPartOne(dirs)))
     print('Size of smallest dir to solve part two: ' + str(sizeOfDirPartTwo(dirs)))
