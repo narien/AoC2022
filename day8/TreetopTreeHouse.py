@@ -15,24 +15,24 @@ def treeIsVisible(x, y, grid):
     if y == 0 or y == len(grid) - 1:
         return True
 
-    lh = set(grid[y][0:x])
-    if max(lh) < myHeight:
+    left = set(grid[y][0:x])
+    if max(left) < myHeight:
         return True
 
-    rh = set(grid[y][x+1:len(grid[y])])
-    if max(rh) < myHeight:
+    right = set(grid[y][x+1:len(grid[y])])
+    if max(right) < myHeight:
         return True
 
-    tv = set()
+    up = set()
     for i in range(0, y):
-        tv.add(grid[i][x])
-    if max(tv) < myHeight:
+        up.add(grid[i][x])
+    if max(up) < myHeight:
         return True
 
-    bv = set()
+    down = set()
     for i in range(y+1, len(grid)):
-        bv.add(grid[i][x])
-    if max(bv) < myHeight:
+        down.add(grid[i][x])
+    if max(down) < myHeight:
         return True
     
     return False
