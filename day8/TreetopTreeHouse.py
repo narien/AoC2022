@@ -37,15 +37,12 @@ def treeIsVisible(x, y, grid):
     
     return False
 
-
-
 def countVisibleTrees(grid):
     total = 0
     for x in range(len(grid[0])):
         for y in range(len(grid)):
             if treeIsVisible(x, y, grid):
                 total += 1
-
     return total
 
 def calcScenicScore(grid):
