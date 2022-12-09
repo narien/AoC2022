@@ -1,12 +1,12 @@
 def moveT(hx, hy, tx, ty):
     if abs(hx - tx) + abs(hy-ty) == 3: #diag move
         tx += 1 if hx - tx > 0 else -1 
-        ty += 1 if hx - tx > 0 else -1 
+        ty += 1 if hy - ty > 0 else -1 
         
     elif abs(hx-tx) == 2: #hor move
         tx += 1 if hx - tx > 0 else -1 
     elif abs(hy-ty) == 2: #vert move
-        ty += 1 if hx - tx > 0 else -1 
+        ty += 1 if hy - ty > 0 else -1 
     return tx, ty
 
 def moveUp(nbrSteps, hx, hy, tx, ty, tailPositions):
