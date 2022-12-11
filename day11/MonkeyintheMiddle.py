@@ -1,3 +1,6 @@
+import copy
+import math
+
 class Monkey:
     items = []
     worryEquation = []
@@ -49,13 +52,18 @@ def parseInput(lines):
                 items = myList[2:]
     return monkeys
 
-def calcMonkeyBusiness(monkeys, iterations):
+def calcMonkeyBusiness(monkeys, iterations, part):
+    lcm = math.lcm(*[monkey.divider for monkey in monkeys])
+
     for _ in range(iterations):
         for monkey in monkeys:
             while(len(monkey.items)):
                 oldW = monkey.items.pop(0)
                 newW = monkey.operation(oldW)
-                newW = int(newW / 3)
+                if part == 1:
+                    newW = int(newW / 3)
+                else:
+                    newW %= lcm
                 monkey.inspectionsDone += 1
                 if newW % monkey.divider == 0:
                     monkeys[monkey.trueTarget].items.append(newW)
@@ -65,10 +73,12 @@ def calcMonkeyBusiness(monkeys, iterations):
     inspections = [monkey.inspectionsDone for monkey in monkeys]
     inspections.sort()
     topInspectionCounts = inspections[-2:]
-    print('monkeybusiness score is: ' + str(topInspectionCounts[0] * topInspectionCounts[1]))
+    print('monkeybusiness score for part ' + str(part) + ' is: ' + str(topInspectionCounts[0] * topInspectionCounts[1]))
 
 if __name__ == '__main__':
     with open('day11/input.txt') as f:
         lines = [line.strip() for line in f]
-    monkeys = parseInput(lines)
-    calcMonkeyBusiness(monkeys, 20)
+    monkeysP1 = parseInput(lines)
+    monkeysP2 = copy.deepcopy(monkeysP1)
+    calcMonkeyBusiness(monkeysP1, 20, 1)
+    calcMonkeyBusiness(monkeysP2, 10000, 2)
