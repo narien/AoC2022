@@ -17,19 +17,19 @@ def foundTop(x, y, tMap):
 
 def addNewSteps(x, y, stepCount, queue, tMap, haveVisited):
     if x < len(tMap[0]) - 1 and (x+1, y) not in haveVisited:
-        if abs(ord(tMap[y][x]) - ord(tMap[y][x+1])) <= 1 or tMap[y][x] in ['y', 'z'] and tMap[y][x+1] == 'E':
+        if ord(tMap[y][x]) - ord(tMap[y][x+1]) >= -1 or tMap[y][x] in ['y', 'z'] and tMap[y][x+1] == 'E':
             queue.append((x+1, y, stepCount))
             haveVisited.add((x+1, y))
     if x > 0 and (x-1, y) not in haveVisited:
-        if abs(ord(tMap[y][x]) - ord(tMap[y][x-1])) <= 1 or tMap[y][x] in ['y', 'z'] and tMap[y][x-1] == 'E':
+        if ord(tMap[y][x]) - ord(tMap[y][x-1]) >= -1 or tMap[y][x] in ['y', 'z'] and tMap[y][x-1] == 'E':
             queue.append((x-1, y, stepCount))
             haveVisited.add((x-1, y))
     if y < len(tMap) - 1 and (x, y+1) not in haveVisited:
-        if abs(ord(tMap[y][x]) - ord(tMap[y+1][x])) <= 1 or tMap[y][x] in ['y', 'z'] and tMap[y+1][x] == 'E':
+        if ord(tMap[y][x]) - ord(tMap[y+1][x]) >= -1 or tMap[y][x] in ['y', 'z'] and tMap[y+1][x] == 'E':
             queue.append((x, y+1, stepCount))
             haveVisited.add((x, y+1))
     if y > 0 and (x, y-1) not in haveVisited:
-        if abs(ord(tMap[y][x]) - ord(tMap[y-1][x])) <= 1 or tMap[y][x] in ['y', 'z'] and tMap[y-1][x] == 'E':
+        if ord(tMap[y][x]) - ord(tMap[y-1][x]) >= -1 or tMap[y][x] in ['y', 'z'] and tMap[y-1][x] == 'E':
             queue.append((x, y-1, stepCount))
             haveVisited.add((x, y-1))
 
