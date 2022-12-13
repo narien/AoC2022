@@ -1,4 +1,3 @@
-import copy
 from functools import cmp_to_key
 import json
 
@@ -55,14 +54,14 @@ if __name__ == '__main__':
 
     pairs = []
     for i in range(0, len(lines), 3):
-        pairs.append((copy.deepcopy(json.loads(lines[i])), copy.deepcopy(json.loads(lines[i+1]))))
+        pairs.append((json.loads(lines[i]), json.loads(lines[i+1])))
 
     evalPairs(pairs)
 
     part2List = [[[2]], [[6]]]
     for line in lines:
         if len(line) > 0:
-            part2List.append(copy.deepcopy(json.loads(line)))
+            part2List.append(json.loads(line))
 
     sortedList = sorted(part2List, key=cmp_to_key(myCompare))
     dPack1 = sortedList.index([[2]]) + 1
