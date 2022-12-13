@@ -1,4 +1,5 @@
 import copy
+from functools import cmp_to_key
 import json
 
 def myEval(p1, p2):
@@ -32,6 +33,11 @@ def myEval(p1, p2):
             return False
     return 0 if len(p1) == len(p2) else True
 
+def myCompare(p1, p2):
+    if myEval(p1, p2):
+        return -1
+    return 1
+
 def evalPairs(pairs):
     currIndex = 0
     total = 0
@@ -52,4 +58,14 @@ if __name__ == '__main__':
         pairs.append((copy.deepcopy(json.loads(lines[i])), copy.deepcopy(json.loads(lines[i+1]))))
 
     evalPairs(pairs)
+
+    part2List = [[[2]], [[6]]]
+    for line in lines:
+        if len(line) > 0:
+            part2List.append(copy.deepcopy(json.loads(line)))
+
+    sortedList = sorted(part2List, key=cmp_to_key(myCompare))
+    dPack1 = sortedList.index([[2]]) + 1
+    dPack2 = sortedList.index([[6]]) + 1
+    print('decoder key is: ' + str(dPack1*dPack2))
 
