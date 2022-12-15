@@ -30,69 +30,57 @@ def calcPartOne(invalidPoints, rowOfInterest):
             interestingRow.add(p)
     print(len(interestingRow))
 
-def generateInterestCoords(positions, minCoord, maxCoord):
-    invalidPoints = set()
-    for key, val in positions.items():
-        print(key)
-        dist = manhattanDist(key, val)
-        minX = max(minCoord, key[0]-dist)
-        maxX = min(maxCoord, key[0]+dist)
-        for x in range(minX, maxX):
-            minY = max(minCoord, key[1]-dist)
-            maxY = min(maxCoord, key[1]+dist)
-            for y in range(minY, maxY):
-                pointDist = manhattanDist(key, (x,y))
-                if pointDist <= dist:
-                    invalidPoints.add((x,y))
-    return invalidPoints
-
-def findBeacon(coords, minCoord, maxCoord):
-    allCoords = set()
-    for x in range(minCoord, maxCoord):
-        for y in range(minCoord, maxCoord):
-            allCoords.add((x,y))
-    onlyOneCoordSet = allCoords - coords
-    if len(onlyOneCoordSet) != 1:
-        print('something went wrong')
-    return onlyOneCoordSet.pop()
-
-def calcTuningFreq(coord):
-    return coord[0]*4000000 + coord[1]
-
-def checkEveryCoord(positions, minC, maxC):
+def checkEveryBorder(positions, minC, maxC):
     sensorDists = dict()
     for key, val in positions.items():
         dist = manhattanDist(key, val)
         sensorDists[key] = dist
-    for x in range(minC, maxC):
-        if x % 1000000 == 0:
-            print('x checkpoint')
-        for y in range(minC, maxC):
-            if y % 1000000 == 0:
-                print('y checkpoint')
-            badCoord = False
-            for key, val in sensorDists.items():
-                dist = manhattanDist((x,y), key)
-                if dist <= val:
-                    badCoord = True
-                    break
-            if badCoord == False:
-                return (x, y)
+    interestingPoints = set()
+    for key, val in positions.items():
+        dist = manhattanDist(key, val) + 1
+        for i in range(dist + 1):
+            c = (key[0] - (dist - i), key[1] + i)
+            if c[0] > minC and c[0] < maxC and c[1] > minC and c[1] < maxC:
+                interestingPoints.add(c)
+        for i in range(dist + 1):
+            c = (key[0] + i, key[1] - (dist - i))
+            if c[0] > minC and c[0] < maxC and c[1] > minC and c[1] < maxC:
+                interestingPoints.add(c)
+        for i in range(dist, -1, -1):
+            c = (key[0] + i, key[1] - (dist - i))
+            if c[0] > minC and c[0] < maxC and c[1] > minC and c[1] < maxC:
+                interestingPoints.add(c)
+        for i in range(dist, -1, -1):
+            c = (key[0] - (dist - i), key[1] + i)
+            if c[0] > minC and c[0] < maxC and c[1] > minC and c[1] < maxC:
+                interestingPoints.add(c)
+    counter = 0
+    for p in interestingPoints:
+        counter += 1
+        if counter % 1000000 == 0:
+            print(counter)
+        badCoord = False
+        for key, val in sensorDists.items():
+            dist = manhattanDist(p, key)
+            if dist <= val:
+                badCoord = True
+                break
+        if badCoord == False:
+            return p
 
-
-
+def calcTuningFreq(coord):
+    return coord[0]*4000000 + coord[1]
 
 if __name__ == '__main__':
     with open('day15/input.txt') as f:
         lines = [line.strip() for line in f]
     positions = parseInput(lines)
-    # rowOfInterest = 2000000 if len(positions) > 14 else 10
-    # invalidPoints = generateRowOfInterestCoords(positions, rowOfInterest)
-    # calcPartOne(invalidPoints, rowOfInterest)
+    rowOfInterest = 2000000 if len(positions) > 14 else 10
+    invalidPoints = generateRowOfInterestCoords(positions, rowOfInterest)
+    calcPartOne(invalidPoints, rowOfInterest)
 
     minCoord = 0
     maxCoord = 4000000 if len(positions) > 14 else 20
 
-    coord = checkEveryCoord(positions, minCoord, maxCoord)
+    coord = checkEveryBorder(positions, minCoord, maxCoord)
     print('tuning frequency is: ' + str(calcTuningFreq(coord)))
-
