@@ -14,7 +14,6 @@ def manhattanDist(p1, p2):
 def generateRowOfInterestCoords(positions, rowOfInterest):
     invalidPoints = set()
     for key, val in positions.items():
-        print(key)
         dist = manhattanDist(key, val)
         if key[1] - dist < rowOfInterest and key[1] + dist > rowOfInterest:
             for x in range(key[0]-dist, key[0]+dist):
@@ -28,7 +27,7 @@ def calcPartOne(invalidPoints, rowOfInterest):
     for p in invalidPoints:
         if p[1] == rowOfInterest:
             interestingRow.add(p)
-    print(len(interestingRow))
+    print('invalid coords on row ' + str(rowOfInterest) + ": " + str(len(interestingRow)))
 
 def checkEveryBorder(positions, minC, maxC):
     sensorDists = dict()
@@ -54,11 +53,7 @@ def checkEveryBorder(positions, minC, maxC):
             c = (key[0] - (dist - i), key[1] + i)
             if c[0] > minC and c[0] < maxC and c[1] > minC and c[1] < maxC:
                 interestingPoints.add(c)
-    counter = 0
     for p in interestingPoints:
-        counter += 1
-        if counter % 1000000 == 0:
-            print(counter)
         badCoord = False
         for key, val in sensorDists.items():
             dist = manhattanDist(p, key)
